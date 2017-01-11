@@ -7,13 +7,13 @@ export ADMIN_PASSWORD=`ss-random`
 ss-set admin-username "${ADMIN_USERNAME}"
 ss-set admin-password "${ADMIN_PASSWORD}"
 
-export S3_HOSTNAME="`ss-get s3-hostname`"
-export S3_ACCESS_KEY="`ss-get s3-access-key`"
-export S3_SECRET_KEY="`ss-get s3-secret-key`"
-export S3_BUCKET="`ss-get s3-bucket`"
+export CEPH_USERNAME=`ss-get ceph-username`
+export CEPH_KEY=`ss-get ceph-key`
+export CEPH_MONITOR_HOSTNAME=`ss-get ceph-monitor-hostname`
+export CEPH_CLUSTER_NAME=`ss-get ceph-cluster-name`
 
 # Scenario has to be defined before the source
-SCENARIO_NAME='slipstreams3'
+SCENARIO_NAME='slipstreamceph'
 
 source ../../bin/run_onedata.sh 
 
