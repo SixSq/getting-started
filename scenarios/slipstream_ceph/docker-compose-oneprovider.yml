@@ -1,0 +1,73 @@
+version: '2.0'
+
+services:
+  node1.oneprovider.localhost:
+    image: onedata/oneprovider:3.0.0-rc11
+    hostname: node1.oneprovider.localhost
+    # dns: 8.8.8.8 # uncomment if container can't ping any domain
+    container_name: oneprovider-1
+    volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock"
+        # configuration persistence
+        - "${ONEPROVIDER_CONFIG_DIR}:/volumes/persistence"
+        # data persistence
+        - "${ONEPROVIDER_DATA_DIR}:/volumes/storage"
+        # Oneprovider
+        #- "${OP_PRIV_KEY_PATH}:/volumes/persistence/etc/op_panel/certs/key.pem"
+        #- "${OP_CERT_PATH}:/volumes/persistence/etc/op_panel/certs/cert.pem"
+        #- "${OP_CACERT_PATH}:/volumes/persistence/etc/op_panel/cacerts/cacert.pem"
+        #- "${OP_CACERT_PATH}:/volumes/persistence/etc/op_worker/cacerts/cacert.pem"
+    ports:
+      - "53:53"
+      - "53:53/udp"
+      - "443:443"
+      - "80:80"
+      - "5555:5555"
+      - "5556:5556"
+      - "6665:6665"
+      - "6666:6666"
+      - "7443:7443"
+      - "8443:8443"
+      - "8876:8876"
+      - "8877:8877"
+      - "9443:9443"
+    environment:
+      #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
+      ONEPANEL_BATCH_MODE: "true"
+      ONEPROVIDER_CONFIG: |
+        cluster:
+          domainName: "oneprovider.localhost"
+          nodes:
+            n1:
+              hostname: "node1"
+          managers:
+            mainNode: "n1"
+            nodes:
+              - "n1"
+          workers:
+            nodes:
+              - "n1"
+          databases:
+            nodes:
+              - "n1"
+          storages:
+            ceph:
+              type: "Ceph"
+              username: "${CEPH_USERNAME}"
+              key: "${CEPH_KEY}"
+              monitorHostname: "${CEPH_MONITOR_HOSTNAME}"
+              clusterName: "${CEPH_CLUSTER_NAME}"
+              name: "${CEPH_CLUSTER_NAME}"
+        oneprovider:
+          register: true
+          name: "${PROVIDER_TYPE}_${PROVIDER_FQDN}"
+          redirectionPoint: "https://${PROVIDER_FQDN}" # OR IP ADDRESS
+          geoLatitude: ${GEO_LATITUDE}
+          geoLongitude: ${GEO_LONGITUDE}
+        onezone:
+          domainName: "${ZONE_FQDN}" # OR IP ADDRESS
+        onepanel:
+          users:
+            "${ADMIN_USERNAME}":
+              password: "${ADMIN_PASSWORD}"
+              userRole: "admin"
