@@ -2,16 +2,16 @@ version: '2.0'
 
 services:
   oneclient:
-    image: onedata/oneclient:3.0.0-rc11
+    image: onedata/oneclient:3.0.0-rc14
     privileged: true
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: oneclient-1
     networks:
       - scenario2
     environment:
-      PROVIDER_HOSTNAME: $PROVIDER_HOSTNAME
-      ONECLIENT_AUTHORIZATION_TOKEN: $ONECLIENT_AUTHORIZATION_TOKEN
-      NO_CHECK_CERTIFICATE: 'true'
+      ONECLIENT_PROVIDER_HOST: $ONECLIENT_PROVIDER_HOST
+      ONECLIENT_ACCESS_TOKEN: $ONECLIENT_ACCESS_TOKEN
+      ONECLIENT_INSECURE: 'true'
 
 networks:
   scenario2:

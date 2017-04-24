@@ -10,14 +10,14 @@ die() {
 
 # As the name suggests
 usage() {
-  echo "Usage: ${0##*/}  [-h] --token <token hash> --provider <provider ip> 
+  echo "Usage: ${0##*/}  [-h] --token <token hash> --provider <provider ip>
 
 This script starts Oneclient components:
 
 Example usage:
 ${0##*/} --provider 172.16.0.1 --token '_Us_MYaSD80YgPpcKfVSLP-Mz3TIqmN1q1vb3qFJ'
 or
-export ONECLIENT_AUTHORIZATION_TOKEN='_Us_MYaSD80YgPpcKfVSLP-Mz3TIqmN1q1vb3qFJ'
+export ONECLIENT_ACCESS_TOKEN='_Us_MYaSD80YgPpcKfVSLP-Mz3TIqmN1q1vb3qFJ'
 ${0##*/} --provider 'node1.oneprovider.onedata.example.com'
 
 Options:
@@ -32,15 +32,14 @@ Options:
 main() {
   local token
   local provider
-  local mount_point
   local compose_up_opts=""
 
-  if [ ! -z "$ONECLIENT_AUTHORIZATION_TOKEN" ]; then
-    token=$ONECLIENT_AUTHORIZATION_TOKEN
+  if [ ! -z "$ONECLIENT_ACCESS_TOKEN" ]; then
+    token=$ONECLIENT_ACCESS_TOKEN
   fi
 
-  if [ ! -z "$PROVIDER_HOSTNAME" ]; then
-    provider=$PROVIDER_HOSTNAME
+  if [ ! -z "$ONECLIENT_PROVIDER_HOST" ]; then
+    provider=$ONECLIENT_PROVIDER_HOST
   fi
 
   while (( $# )); do
@@ -49,16 +48,12 @@ main() {
               usage
               exit 0
               ;;
-          -t | --token)       
+          -t | --token)
               token=$2
               shift
               ;;
-          -p | --provider)      
+          -p | --provider)
               provider=$2
-              shift
-              ;;
-          -m | --mount-point)       
-              mount_point=$2
               shift
               ;;
           -d | --detach)
@@ -69,7 +64,7 @@ main() {
               exit 1
               ;;
           *)
-              die "no option ${flag}"
+              die "no option $1"
               ;;
       esac
       shift
@@ -83,9 +78,8 @@ main() {
     echo "No provider supplied. Assuming \"localhost\"."
     provider="localhost"
   fi
-  
-  service='oneclient'
-  ONECLIENT_AUTHORIZATION_TOKEN=$token PROVIDER_HOSTNAME=$provider docker-compose -f "docker-compose-${service}.yml" up ${compose_up_opts} "oneclient"
-  
-}
 
+  service='oneclient'
+  ONECLIENT_ACCESS_TOKEN=$token ONECLIENT_PROVIDER_HOST=$provider docker-compose -f "docker-compose-${service}.yml" up ${compose_up_opts} "oneclient"
+
+}

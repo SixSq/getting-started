@@ -6,7 +6,7 @@ SCENARIO_NAME='10oneproviderbetaonedataorg'
 source ../../bin/run_onedata.sh
 
 clean_scenario() {
-	: # pass
+  : # pass
 }
 
 main "$@"

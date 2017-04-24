@@ -335,7 +335,7 @@ services:
     image: onedata/onezone:some_version
     hostname: node1.onezone.localhost
     volumes:
-        - "<absolute path to your auth.config>:/volumes/persistence/var/lib/oz_worker/auth.config" # this line was added
+        - "<absolute path to your auth.config>:/var/lib/oz_worker/auth.config" # this line was added
         - "${ONEZONE_CONFIG_DIR}:/volumes/persistence"
         - "/var/run/docker.sock:/var/run/docker.sock"
 ```

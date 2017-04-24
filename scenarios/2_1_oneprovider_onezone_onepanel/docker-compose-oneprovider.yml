@@ -2,7 +2,7 @@ version: '2.0'
 
 services:
   node1.oneprovider.localhost:
-    image: onedata/oneprovider:3.0.0-rc11
+    image: onedata/oneprovider:3.0.0-rc14
     hostname: node1.oneprovider.localhost
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: oneprovider-1
@@ -13,10 +13,10 @@ services:
         # data persistence
         - "${ONEPROVIDER_DATA_DIR}:/volumes/storage"
         # Oneprovider
-        #- "${OP_PRIV_KEY_PATH}:/volumes/persistence/etc/op_panel/certs/key.pem"
-        #- "${OP_CERT_PATH}:/volumes/persistence/etc/op_panel/certs/cert.pem"
-        #- "${OP_CACERT_PATH}:/volumes/persistence/etc/op_panel/cacerts/cacert.pem"
-        #- "${OP_CACERT_PATH}:/volumes/persistence/etc/op_worker/cacerts/cacert.pem"
+        #- "${OP_PRIV_KEY_PATH}:/etc/op_panel/certs/key.pem"
+        #- "${OP_CERT_PATH}:/etc/op_panel/certs/cert.pem"
+        #- "${OP_CACERT_PATH}:/etc/op_panel/cacerts/cacert.pem"
+        #- "${OP_CACERT_PATH}:/etc/op_worker/cacerts/cacert.pem"
     networks:
       - scenario2
 

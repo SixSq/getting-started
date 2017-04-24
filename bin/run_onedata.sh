@@ -1,9 +1,7 @@
 #!/bin/bash
 
 REPO_ROOT="${PWD//getting-started*}getting-started/"
-SPACES_DIR="${PWD}/myspaces/"
 AUTH_CONF="bin/config/auth.conf"
-AUTH_PATH="${REPO_ROOT}${AUTH_CONF}"
 ZONE_COMPOSE_FILE="docker-compose-onezone.yml"
 PROVIDER_COMPOSE_FILE="docker-compose-oneprovider.yml"
 
@@ -23,18 +21,19 @@ die() {
 
 # Get variables from env
 set_defaults_if_not_defined_in_env() {
-   # Default coordinates
-   [[ -z ${GEO_LATITUDE+x} ]] && GEO_LATITUDE="50.068968"
-   [[ -z ${GEO_LONGITUDE+x} ]] && GEO_LONGITUDE="19.909444" 
+  # Default coordinates
+  [[ -z ${GEO_LATITUDE+x} ]] && GEO_LATITUDE="50.068968"
+  [[ -z ${GEO_LONGITUDE+x} ]] && GEO_LONGITUDE="19.909444"
 
-   # Default paths
-   [[ -z ${ONEPROVIDER_DATA_DIR+x} ]] && ONEPROVIDER_DATA_DIR="${PWD}/oneprovider_data/"
-   [[ -z ${ONEPROVIDER_CONFIG_DIR+x} ]] && ONEPROVIDER_CONFIG_DIR="${PWD}/config_oneprovider/"
-   [[ -z ${ONEZONE_CONFIG_DIR+x} ]] && ONEZONE_CONFIG_DIR="${PWD}/config_onezone/"
+  # Default paths
+  [[ -z ${ONEPROVIDER_DATA_DIR+x} ]] && ONEPROVIDER_DATA_DIR="${PWD}/oneprovider_data/"
+  [[ -z ${ONEPROVIDER_CONFIG_DIR+x} ]] && ONEPROVIDER_CONFIG_DIR="${PWD}/config_oneprovider/"
+  [[ -z ${ONEZONE_CONFIG_DIR+x} ]] && ONEZONE_CONFIG_DIR="${PWD}/config_onezone/"
+  [[ -z ${AUTH_PATH+x} ]] && AUTH_PATH="${REPO_ROOT}${AUTH_CONF}"
 
-   # Default names for provider and zone
-   [[ -z ${ZONE_NAME+x} ]] && ZONE_NAME="Example Zone"
-   [[ -z ${PROVIDER_NAME+x} ]] && PROVIDER_NAME="Example Provider" 
+  # Default names for provider and zone
+  [[ -z ${ZONE_NAME+x} ]] && ZONE_NAME="Example Zone"
+  [[ -z ${PROVIDER_NAME+x} ]] && PROVIDER_NAME="Example Provider"
 }
 
 print_docker_compose_file() {
@@ -60,9 +59,9 @@ BEGINING===="
 
 # As the name suggests
 usage() {
-  echo "Usage: ${0##*/}  [-h] [ --zone  | --provider ] [ --(with-|without-)clean ] [ --debug ] 
+  echo "Usage: ${0##*/}  [-h] [ --zone  | --provider ] [ --(with-|without-)clean ] [ --debug ]
 
-Onezone usage: ${0##*/} --zone 
+Onezone usage: ${0##*/} --zone
 Oneprovider usage: ${0##*/} --provider [ --provider-fqdn <fqdn> ] [ --zone-fqdn <fqdn> ] [ --provider-data-dir ] [ --set-lat-long ]
 
 Example usage:
@@ -70,7 +69,7 @@ ${0##*/} --provider --provider-fqdn 'myonedataprovider.tk' --zone-fqdn 'myonezon
 
 Options:
   -h, --help           display this help and exit
-  --name               a name of a provider or a zone 
+  --name               a name of a provider or a zone
   --zone               starts onezone service
   --provider           starts oneprovider service
   --provider-fqdn      FQDN for oneprovider (not providing this option causes a script to try to guess public ip using http://ipinfo.io/ip service)
@@ -101,18 +100,18 @@ is_clean_needed () {
   [[ -d "$ONEZONE_CONFIG_DIR" ]] && return 0
   [[ -d "$ONEPROVIDER_CONFIG_DIR" ]] && return 0
   [[ -d "$ONEPROVIDER_DATA_DIR" ]] && return 0
- 
+
   [[ $(docker ps -aqf 'name=onezone') != "" ]] && return 0
   [[ $(docker ps -aqf 'name=oneprovider') != "" ]] && return 0
-  
+
   return 1
 }
 
 clean() {
-  
+
   echo "The cleaning procedure will need to run commands using sudo, in order to remove volumes created by docker. Please provide a password if needed."
   # Make sure only root can run our script
-  
+
   #if [ "$(whoami)" != root ]; then
   # echo "This script must be run as root!" 1>&2
   # exit 1
@@ -120,15 +119,15 @@ clean() {
 
   [[ $(git status --porcelain "$ZONE_COMPOSE_FILE") != ""  ]] && echo "Warrning the file $ZONE_COMPOSE_FILE has changed, the cleaning procedure may not work!"
   [[ $(git status --porcelain "$PROVIDER_COMPOSE_FILE") != ""  ]] && echo "Warrning the file $PROVIDER_COMPOSE_FILE has changed, the cleaning procedure may not work!"
- 
+
   echo "Removing provider and/or zone config dirs..."
-  sudo rm -rf "${ONEZONE_CONFIG_DIR}" 
-  sudo rm -rf "${ONEPROVIDER_CONFIG_DIR}" 
-  
+  sudo rm -rf "${ONEZONE_CONFIG_DIR}"
+  sudo rm -rf "${ONEPROVIDER_CONFIG_DIR}"
+
 
   echo "Removing provider data dir..."
-  sudo rm -rf "${ONEPROVIDER_DATA_DIR}" 
-  
+  sudo rm -rf "${ONEPROVIDER_DATA_DIR}"
+
   echo "Removing Onedata containers..."
   if (docker rm -vf 'onezone-1' 2>/dev/null) ; then
     echo Removed onezone container onezone-1.
@@ -154,7 +153,7 @@ batch_mode_check() {
     RED="$(tput setaf 1)"
     GREEN="$(tput setaf 2)"
     RESET="$(tput sgr0)"
-  
+
     echo -e "${RED}IMPORTANT: After each start wait for a message: ${GREEN}Congratulations! ${service} has been successfully started.${RESET}"
     echo -e "${RED}To ensure that the ${service} is completely setup.${RESET}"
   fi
@@ -173,16 +172,16 @@ handle_onezone() {
       echo ZONE_NAME="$ZONE_NAME" ZONE_DOMAIN_NAME="$ZONE_DOMAIN_NAME" PROVIDER_FQDN="$PROVIDER_FQDN" ZONE_FQDN="$ZONE_FQDN" AUTH_PATH="$AUTH_PATH" ONEZONE_CONFIG_DIR="$ONEZONE_CONFIG_DIR" ${docker_compose_sh[*]} "$@"
     }
     print_docker_compose_file "$compose_file_name"
-  else 
+  else
     docker_compose_sh_local() {
       ZONE_NAME="$ZONE_NAME" ZONE_DOMAIN_NAME="$ZONE_DOMAIN_NAME" PROVIDER_FQDN="$PROVIDER_FQDN" ZONE_FQDN="$ZONE_FQDN" AUTH_PATH="$AUTH_PATH" ONEZONE_CONFIG_DIR="$ONEZONE_CONFIG_DIR" ${docker_compose_sh[*]} "$@"
     }
   fi
-  
+
   batch_mode_check "onezone" "$compose_file_name"
   docker_compose_sh_local -f "$compose_file_name" pull
   docker_compose_sh_local -f "$compose_file_name" up $compose_up_opts
-} 
+}
 
 handle_oneprovider() {
   local n=$1
@@ -208,15 +207,15 @@ handle_oneprovider() {
   batch_mode_check "oneprovider" "$compose_file_name"
   docker_compose_sh_local -f "$compose_file_name" pull
   docker_compose_sh_local -f "$compose_file_name" up $compose_up_opts
-} 
+}
 
 main() {
 
   if (( ! $# )); then
     usage
   fi
-  
-  set_defaults_if_not_defined_in_env 
+
+  set_defaults_if_not_defined_in_env
 
   local n=1
   local service
@@ -297,7 +296,7 @@ main() {
 
   if is_clean_needed ; then
     if [[ -z $keep_old_config ]]; then
-      echo "We detected configuration files, data and docker containers from a previous Onedata deployment. 
+      echo "We detected configuration files, data and docker containers from a previous Onedata deployment.
   Would you like to keep them (y) or start a new deployment (n)?"
       read -r keep_old_config
     fi

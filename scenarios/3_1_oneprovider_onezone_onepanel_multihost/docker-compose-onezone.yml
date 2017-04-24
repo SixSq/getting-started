@@ -2,7 +2,7 @@ version: '2.0'
 
 services:
   node1.onezone.localhost:
-    image: onedata/onezone:3.0.0-rc11
+    image: onedata/onezone:3.0.0-rc14
     hostname: node1.onezone.localhost
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: onezone-1
@@ -11,14 +11,14 @@ services:
         # configuration persistance
         - "${ONEZONE_CONFIG_DIR}:/volumes/persistence"
         # OpenId configuration
-        #- "${AUTH_PATH}:/volumes/persistence/var/lib/oz_worker/auth.config"
+        #- "${AUTH_PATH}:/var/lib/oz_worker/auth.config"
         # DNS configuration
-        #- "${DNS_PATH}:/volumes/persistence/var/lib/oz_worker/dns.config"
+        #- "${DNS_PATH}:/var/lib/oz_worker/dns.config"
         # Onepanel
-        #- "${OZ_PRIV_KEY_PATH}:/volumes/persistence/etc/oz_panel/certs/key.pem"
-        #- "${OZ_CERT_PATH}:/volumes/persistence/etc/oz_panel/certs/cert.pem"
-        #- "${OZ_CACERT_PATH}:/volumes/persistence/etc/oz_panel/cacerts/cacert.pem"
-        #- "${OZ_CACERT_PATH}:/volumes/persistence/etc/oz_worker/cacerts/cacert.pem"
+        #- "${OZ_PRIV_KEY_PATH}:/etc/oz_panel/certs/key.pem"
+        #- "${OZ_CERT_PATH}:/etc/oz_panel/certs/cert.pem"
+        #- "${OZ_CACERT_PATH}:/etc/oz_panel/cacerts/cacert.pem"
+        #- "${OZ_CACERT_PATH}:/etc/oz_worker/cacerts/cacert.pem"
     ports:
       - "53:53"
       - "53:53/udp"
