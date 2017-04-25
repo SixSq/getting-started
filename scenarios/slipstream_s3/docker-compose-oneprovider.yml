@@ -52,9 +52,8 @@ services:
               - "n1"
           storages:
             S3:
-              type: "S3"
-              s3Hostname: "${S3_HOSTNAME}"
-              IANHostname: "${S3_HOSTNAME}"
+              type: "s3"
+              hostname: "${S3_HOSTNAME}"
               bucketName: "${S3_BUCKET}"
               accessKey: "${S3_ACCESS_KEY}"
               secretKey: "${S3_SECRET_KEY}"
