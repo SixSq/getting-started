@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # SlipStream Parameters
-export PROVIDER_TYPE='nfs'
+export PROVIDER_TYPE='s3'
 export ADMIN_USERNAME='admin'
 export ADMIN_PASSWORD=`ss-random`
 ss-set admin-username "${ADMIN_USERNAME}"
