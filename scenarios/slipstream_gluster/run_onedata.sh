@@ -18,7 +18,6 @@ attach_gluster_volume() {
 }
 
 export ONEPROVIDER_DATA_DIR=/mnt/gluster-onedata
-attach_gluster_volume
 
 # Docker compose project name.
 SCENARIO_NAME='slipstreamgluster'
@@ -30,3 +29,5 @@ clean_scenario() {
 }
 
 main "$@"
+
+attach_gluster_volume
