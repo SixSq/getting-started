@@ -7,6 +7,6 @@ services:
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: oneclient-1
     environment:
-      PROVIDER_HOSTNAME: $PROVIDER_HOSTNAME
+      ONECLIENT_PROVIDER_HOSTNAME: $PROVIDER_HOSTNAME
       ONECLIENT_AUTHORIZATION_TOKEN: $ONECLIENT_AUTHORIZATION_TOKEN
-      NO_CHECK_CERTIFICATE: 'true'
+      ONECLIENT_NO_CHECK_CERTIFICATE: 'true'
