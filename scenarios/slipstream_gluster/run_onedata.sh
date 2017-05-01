@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 # SlipStream Parameters
 export PROVIDER_TYPE='gluster'
