@@ -33,6 +33,6 @@ clean_scenario() {
 	: # pass
 }
 
-main "$@"
-
 attach_gluster_volume
+
+main "$@"
