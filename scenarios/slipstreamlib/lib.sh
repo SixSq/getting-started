@@ -28,6 +28,11 @@ set_s3_env_vars() {
     export S3_ACCESS_KEY="`ss-get s3-access-key`"
     export S3_SECRET_KEY="`ss-get s3-secret-key`"
     export S3_BUCKET="`ss-get s3-bucket`"
+
+    if [ "$S3_HOSTNAME" == "sos.exo.io" ]; then
+        sed -i -e 's/#signatureVersion: 2/signatureVersion: 2/' \
+            docker-compose-oneprovider.yml
+    fi
 }
 
 attach_gluster_volume() {
