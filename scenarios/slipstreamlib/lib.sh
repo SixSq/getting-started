@@ -2,8 +2,15 @@
 
 set_onecomp_type() {
     # CLI input is expected.
-    export ONECOMP_TYPE=$(echo "$@" | grep -q -- "--provider" && \
-        echo provider || echo zone)
+    export ONECOMP_TYPE=
+    if ( echo "$@" | grep -q -- "--provider" ); then
+        type=provider
+    elif ( echo "$@" | grep -q -- "--zone" ); then
+        type=zone
+    else
+        type=client
+    fi
+    export ONECOMP_TYPE=$type
 }
 
 set_ss_params() {
