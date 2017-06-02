@@ -21,6 +21,7 @@ services:
       - scenario2
     environment:
       #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
+      ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (oneof: none, debug, info, error)
       ONEPANEL_BATCH_MODE: "true"
       ONEPROVIDER_CONFIG: |
         cluster:
