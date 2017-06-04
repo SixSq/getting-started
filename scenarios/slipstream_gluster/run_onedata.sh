@@ -10,5 +10,6 @@ set_onecomp_type "$@"
 set_ss_params
 attach_gluster_volume
 set_docker_image_id
+wait_onezone_ready
 
 main "$@"
