@@ -10,5 +10,6 @@ set_onecomp_type "$@"
 set_ss_params
 set_s3_env_vars
 set_docker_image_id
+wait_onezone_ready
 
 main "$@"

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+wait_onezone_ready() {
+    ss-get --timeout 1800 onezone-ready
+}
+
 set_onecomp_type() {
     # CLI input is expected.
     export ONECOMP_TYPE=
