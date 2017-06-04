@@ -1,6 +1,7 @@
 #!/bin/bash
 
 wait_onezone_ready() {
+    [ "$ONECOMP_TYPE" == "provider" ] || return 0
     ss-get --timeout 1800 onezone-ready
 }
 
