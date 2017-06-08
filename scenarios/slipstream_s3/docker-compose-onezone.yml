@@ -11,7 +11,7 @@ services:
         # configuration persistance
         - "${ONEZONE_CONFIG_DIR}:/volumes/persistence"
         # OpenId configuration
-        #- "${AUTH_PATH}:/volumes/persistence/var/lib/oz_worker/auth.config"
+        - "${AUTH_PATH}:/volumes/persistence/var/lib/oz_worker/auth.config"
         # DNS configuration
         #- "${DNS_PATH}:/volumes/persistence/var/lib/oz_worker/dns.config"
         # Onepanel
