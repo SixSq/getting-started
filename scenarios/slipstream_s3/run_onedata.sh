@@ -20,7 +20,7 @@ if [ "$ONECOMP_TYPE" == "zone" ]; then
     HNFEDID_URL=$(ss-get hnfedid-url)
     sed -i -e 's/HNFEDID_APP_ID/'$HNFEDID_APP_ID'/' $AUTH_PATH
     sed -i -e 's/HNFEDID_APP_SECRET/'$HNFEDID_APP_SECRET'/' $AUTH_PATH
-    sed -i -e 's/HNFEDID_URL/'$HNFEDID_URL'/' $AUTH_PATH
+    sed -i -e 's|HNFEDID_URL|'$HNFEDID_URL'|' $AUTH_PATH
 fi
 
 main "$@"
