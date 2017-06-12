@@ -1,21 +1,9 @@
 #!/bin/bash
 
-wait_onezone_ready() {
-    [ "$ONECOMP_TYPE" == "provider" ] || return 0
-    ss-get --timeout 1800 onezone-ready
-}
+export SCENARIO_NAME=slipstream
 
-set_onecomp_type() {
-    # CLI input is expected.
-    export ONECOMP_TYPE=
-    if ( echo "$@" | grep -q -- "provider" ); then
-        type=provider
-    elif ( echo "$@" | grep -q -- "zone" ); then
-        type=zone
-    else
-        type=client
-    fi
-    export ONECOMP_TYPE=$type
+wait_onezone_ready() {
+    ss-get --timeout 1800 onezone-ready
 }
 
 set_ss_params() {
@@ -38,8 +26,6 @@ set_docker_image_id() {
 }
 
 configure_s3() {
-    [ "$ONECOMP_TYPE" == "provider" ] || return 0
-
     export S3_HOSTNAME="`ss-get s3-hostname`"
     export S3_ACCESS_KEY="`ss-get s3-access-key`"
     export S3_SECRET_KEY="`ss-get s3-secret-key`"
@@ -52,8 +38,6 @@ configure_s3() {
 }
 
 configure_gluster() {
-    [ "$ONECOMP_TYPE" == "provider" ] || return 0
-
     export ONEPROVIDER_DATA_DIR=/mnt/gluster-onedata
 
     GL_VERSION=`ss-get gl-version`
@@ -65,7 +49,11 @@ configure_gluster() {
     mount -t glusterfs $GL_MASTER_VOL $ONEPROVIDER_DATA_DIR
 }
 
-source ../../bin/run_onedata.sh
+if [ "$ONECOMP_TYPE" == "client" ]; then
+    source ../../bin/run_oneclient.sh
+else
+    source ../../bin/run_onedata.sh
+fi
 
 clean_scenario() {
     : # pass

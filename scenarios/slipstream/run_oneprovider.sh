@@ -1,8 +1,10 @@
 #!/bin/bash
 
-types="s3|gluster|s3-gluster"
-if [ echo $1 | grep -Eq "^($types)$" ]; then
-    echo "First argumest should be one of: $types"
+export ONECOMP_TYPE=provider
+
+scenarios="s3|gluster|s3-gluster"
+if [ echo $1 | grep -Eq "^($scenarios)$" ]; then
+    echo "First argument should be one of: $scenarios"
     exit 1
 fi
 export PROVIDER_TYPE=$1

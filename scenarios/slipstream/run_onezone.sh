@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export ONECOMP_TYPE=zone
+
 source ./lib.sh
 
 set_ss_params
@@ -14,4 +16,4 @@ sed -i -e 's|HNFEDID_APP_ID|'$HNFEDID_APP_ID'|' $AUTH_PATH
 sed -i -e 's|HNFEDID_APP_SECRET|'$HNFEDID_APP_SECRET'|' $AUTH_PATH
 sed -i -e 's|HNFEDID_URL|'$HNFEDID_URL'|' $AUTH_PATH
 
-main "--zone $@"
+main --zone $@
