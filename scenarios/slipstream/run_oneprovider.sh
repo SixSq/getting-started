@@ -16,8 +16,8 @@ SCENARIO_NAME="slipstream$PROVIDER_TYPE"
 
 source ./lib.sh
 
-cp docker_compose-oneprovider_$PROVIDER_TYPE.yml \
-    docker_compose-oneprovider.yml
+cp docker-compose-oneprovider_$PROVIDER_TYPE.yml \
+    docker-compose-oneprovider.yml
 
 set_ss_params
 
