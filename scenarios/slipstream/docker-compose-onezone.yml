@@ -13,12 +13,12 @@ services:
         # OpenId configuration
         - "${AUTH_PATH}:/var/lib/oz_worker/auth.config"
         # DNS configuration
-        #- "${DNS_PATH}:/volumes/persistence/var/lib/oz_worker/dns.config"
+        #- "${DNS_PATH}:/var/lib/oz_worker/dns.config"
         # Onepanel
-        #- "${OZ_PRIV_KEY_PATH}:/volumes/persistence/etc/oz_panel/certs/key.pem"
-        #- "${OZ_CERT_PATH}:/volumes/persistence/etc/oz_panel/certs/cert.pem"
-        #- "${OZ_CACERT_PATH}:/volumes/persistence/etc/oz_panel/cacerts/cacert.pem"
-        #- "${OZ_CACERT_PATH}:/volumes/persistence/etc/oz_worker/cacerts/cacert.pem"
+        #- "${OZ_PRIV_KEY_PATH}:/etc/oz_panel/certs/key.pem"
+        #- "${OZ_CERT_PATH}:/etc/oz_panel/certs/cert.pem"
+        #- "${OZ_CACERT_PATH}:/etc/oz_panel/cacerts/cacert.pem"
+        #- "${OZ_CACERT_PATH}:/etc/oz_worker/cacerts/cacert.pem"
     ports:
       - "53:53"
       - "53:53/udp"
