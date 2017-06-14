@@ -51,9 +51,6 @@ services:
             nodes:
               - "n1"
           storages:
-            GlusterFS:
-              type: "posix"
-              mountPoint: "/volumes/storage"
             S3:
               type: "s3"
               hostname: "${S3_HOSTNAME}"
