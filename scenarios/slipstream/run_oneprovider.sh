@@ -1,9 +1,11 @@
 #!/bin/bash
 
+set -x
+
 export ONECOMP_TYPE=provider
 
 scenarios="s3|gluster|s3-gluster"
-if [ echo $1 | grep -Eq "^($scenarios)$" ]; then
+if ( ! echo $1 | grep -Eq "^($scenarios)$" ); then
     echo "First argument should be one of: $scenarios"
     exit 1
 fi
@@ -40,4 +42,4 @@ set_docker_image_id
 
 wait_onezone_ready
 
-main --provier $@
+main --provider $@
