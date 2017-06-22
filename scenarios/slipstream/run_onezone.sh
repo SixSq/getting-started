@@ -16,26 +16,20 @@ export HNFEDID_URL=$(ss-get hn-fedid-url)
 HOST=$(ss-get hostname)
 
 
-generate_post_data()
- {
-     cat <<EOF 
-{
- "clientId": "$HN_CLIENT_ID",
- "rootUrl" : "https://${HOST}",
- "redirectUris" : "[https://${HOST}/validate_login]"
-}
-EOF
-     }
- 
+export JSON_PATH=$(pwd)/client.json
 
-# Inspired from doc at https://keycloak.gitbooks.io/documentation/securing_apps/topics/client-registration.html
+sed -i -e 's|_HN_CLIENT_ID|'$HN_CLIENT_ID'|' $JSON_PATH
+sed -i -e 's|_HOST|'$HOST'|' $JSON_PATH
+
+
+# https://keycloak.gitbooks.io/documentation/securing_apps/topics/client-registration.html
 RESP=$(curl -X POST \
-                   --data "$(generate_post_data)"  \
+                   -d @client.json \
                    -H "Content-Type:application/json" \
                    -H "Authorization: bearer $INIT_TKN" \
                    "$HNFEDID_URL/clients-registrations/default")
 
-export HNFEDID_APP_SECRET=$(echo $RESP | jq '.secret')
+export HNFEDID_APP_SECRET=$(echo $RESP | jq -r '.secret')
 
 
 sed -i -e 's|HN_CLIENT_ID|'$HN_CLIENT_ID'|' $AUTH_PATH
