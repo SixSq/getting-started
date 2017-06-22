@@ -11,7 +11,7 @@ set_docker_image_id
 export AUTH_PATH=$(pwd)/auth.config
 HN_CLIENT_ID=$(ss-get hn-client-id)
 INIT_TKN=$(ss-get hn-fedid-token)
-export HNFEDID_URL=$(ss-get hnfedid-url)
+export HNFEDID_URL=$(ss-get hn-fedid-url)
 
 HOST=$(ss-get hostname)
 
