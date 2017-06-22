@@ -2,7 +2,7 @@ version: '2.0'
 
 services:
   node1.onezone.localhost:
-    image: onedata/onezone:3.0.0-rc14
+    image: onedata/onezone:3.0.0-rc16
     hostname: node1.onezone.localhost
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: onezone-1
@@ -23,7 +23,7 @@ services:
       - scenario2
     environment:
       #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
-      ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (oneof: none, debug, info, error)
+      ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
       ONEPANEL_BATCH_MODE: "true"
       ONEZONE_CONFIG: |
         cluster:
