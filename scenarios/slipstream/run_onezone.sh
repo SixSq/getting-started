@@ -16,9 +16,21 @@ export HNFEDID_URL=$(ss-get hn-fedid-url)
 HOST=$(ss-get hostname)
 
 
-# https://keycloak.gitbooks.io/documentation/securing_apps/topics/client-registration.html
+generate_post_data()
+{
+    cat <<EOF
+{
+   "clientId": "$HN_CLIENT_ID",
+   "rootUrl" : "https://${HOST}",
+   "redirectUris" : ["https://${HOST}/validate_login"]
+}
+EOF 
+}
+
+
+# Inspired from doc at https://keycloak.gitbooks.io/documentation/securing_apps/topics/client-registration.html
 RESP=$(curl -X POST \
-                   -d '{ "clientId": "$HN_CLIENT_ID", "rootUrl" : "https://${HOST}", "redirectUris" : ["https://${HOST}/validate_login"] }' \
+                   --data "$(generate_post_data)"  \
                    -H "Content-Type:application/json" \
                    -H "Authorization: bearer $INIT_TKN" \
                    "$HNFEDID_URL/clients-registrations/default")
