@@ -47,4 +47,4 @@ set +e
 main --zone --name $ZONE_NAME $@
 set -e
 
-wait_started
+# wait_started
