@@ -1,5 +1,5 @@
 {
-    "clientId": "_HN_CLIENT_ID",
-    "rootUrl" : "https://_HOST",
-    "redirectUris" : ["https://_HOST/validate_login"]
+    "clientId": "HN_FEDID_CLIENT_ID",
+    "rootUrl" : "https://OZ_HOST",
+    "redirectUris" : ["https://OZ_HOST/validate_login"]
 }
