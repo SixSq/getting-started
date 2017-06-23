@@ -1,0 +1,5 @@
+{
+    "clientId": "_HN_CLIENT_ID",
+    "rootUrl" : "https://_HOST",
+    "redirectUris" : ["https://_HOST/validate_login"]
+}
