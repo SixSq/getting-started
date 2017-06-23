@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -x
+set -e
 
 export ONECOMP_TYPE=provider
 

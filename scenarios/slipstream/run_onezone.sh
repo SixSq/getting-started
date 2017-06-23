@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -x
+set -e
+
 export ONECOMP_TYPE=zone
 
 source ./lib.sh
@@ -41,3 +44,5 @@ sed -i -e 's|HN_FEDID_CLIENT_SECRET|'$HN_FEDID_CLIENT_SECRET'|' $AUTH_PATH
 sed -i -e 's|HN_FEDID_OID_CONF_URL|'$HN_FEDID_OID_CONF_URL'|' $AUTH_PATH
 
 main --zone --name $ZONE_NAME $@
+
+# wait_started
