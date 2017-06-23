@@ -61,7 +61,7 @@ clean_scenario() {
 
 wait_started() {
     msg="Congratulations! one$ONECOMP_TYPE has been successfully started"
-    while $(! docker logs one$ONECOMP_TYPE-1 | grep -q $msg); do
+    while $(! docker logs one$ONECOMP_TYPE-1 | grep -q "$msg"); do
         sleep 3
     done
 }
