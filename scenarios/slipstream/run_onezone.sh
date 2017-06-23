@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -x
-# set -e
+set -e
 
 export ONECOMP_TYPE=zone
 
@@ -43,6 +43,8 @@ sed -i -e 's|HN_FEDID_CLIENT_ID|'$HN_FEDID_CLIENT_ID'|' $AUTH_PATH
 sed -i -e 's|HN_FEDID_CLIENT_SECRET|'$HN_FEDID_CLIENT_SECRET'|' $AUTH_PATH
 sed -i -e 's|HN_FEDID_OID_CONF_URL|'$HN_FEDID_OID_CONF_URL'|' $AUTH_PATH
 
+set +x
 main --zone --name $ZONE_NAME $@
+set -x
 
-# wait_started
+wait_started

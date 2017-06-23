@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -x
-# set -e
+set -e
 
 export ONECOMP_TYPE=provider
 
@@ -43,4 +43,8 @@ set_docker_image_id
 
 wait_onezone_ready
 
+set +x
 main --provider $@
+set -x
+
+# wait_started
