@@ -26,7 +26,9 @@ HN_FEDID_OID_CONF_URL=$HN_FEDID_TENANT_URL/.well-known/openid-configuration
 # https://keycloak.gitbooks.io/documentation/securing_apps/topics/client-registration.html
 JSON_PATH=$(pwd)/client.json
 OZ_HOST=$(ss-get hostname)
-sed -i -e 's|OZ_HOST|'$OZ_HOST'|' $JSON_PATH
+sed -i -e 's|OZ_HOST|'$OZ_HOST'|' \
+    -i -e 's|HN_FEDID_CLIENT_ID|'$HN_FEDID_CLIENT_ID'|' \
+    $JSON_PATH
 RESP=$(curl -sSf -X POST \
            -d @$JSON_PATH \
            -H "Content-Type:application/json" \
@@ -34,8 +36,7 @@ RESP=$(curl -sSf -X POST \
            "$HN_FEDID_CLIENT_REG_URL")
 HN_FEDID_CLIENT_SECRET=$(echo $RESP | jq -r '.secret')
 
-
-sed -i -e 's|HN_FEDID_CLIENT_ID|'$HN_FEDID_CLIENT_ID'|' $AUTH_PATH $JSON_PATH
+sed -i -e 's|HN_FEDID_CLIENT_ID|'$HN_FEDID_CLIENT_ID'|' $AUTH_PATH
 sed -i -e 's|HN_FEDID_CLIENT_SECRET|'$HN_FEDID_CLIENT_SECRET'|' $AUTH_PATH
 sed -i -e 's|HN_FEDID_OID_CONF_URL|'$HN_FEDID_OID_CONF_URL'|' $AUTH_PATH
 
