@@ -43,8 +43,8 @@ set_docker_image_id
 
 wait_onezone_ready
 
-set +x
+set +e
 main --provider $@
-set -x
+set -e
 
 # wait_started
