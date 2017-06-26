@@ -18,9 +18,9 @@ set_docker_image_id() {
     if [ -f "$provider_file" ]; then
         cp $provider_file docker_compose-oneprovider.yml
     fi
-    docker_id=`ss-get --noblock docker-image-id`
-    if [ -n "$docker_id" ]; then
-        sed -i -e "s|image:.*$|image: $docker_id|" \
+    version=`ss-get --noblock one$ONECOMP_TYPE-version`
+    if [ -n "$version" ]; then
+        sed -i -e "s|image:.*$|image: onedata/one${ONECOMP_TYPE}:$version|" \
             docker-compose-one${ONECOMP_TYPE}.yml
     fi
 }
