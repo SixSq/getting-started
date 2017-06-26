@@ -32,7 +32,7 @@ JSON_PATH=$(pwd)/client.json
 OZ_HOST=$(ss-get hostname)
 sed -i -e 's|OZ_HOST|'$OZ_HOST'|' \
     -i -e 's|HN_FEDID_CLIENT_ID|'$HN_FEDID_CLIENT_ID'|' \
-    -i -e 's|HN_FEDID_CLIENT_TEMPLATE|'$HN_FEDID_CLIENT_TEMPLATE'|' \
+    -i -e 's|HN_FEDID_CLIENT_TEMPLATE|'"$HN_FEDID_CLIENT_TEMPLATE"'|' \
     $JSON_PATH
 RESP=$(curl -sSf -X POST \
            -d @$JSON_PATH \
