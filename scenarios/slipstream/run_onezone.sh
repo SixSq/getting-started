@@ -17,7 +17,6 @@ export AUTH_PATH=$(pwd)/auth.config
 HN_FEDID_CLIENT_INIT_TKN=$(ss-get hn-fedid-token)
 HN_FEDID_BASE_URL=$(ss-get hn-fedid-url)
 HN_FEDID_CLIENT_ID=$(ss-get hn-fedid-client-id)
-HN_FEDID_CLIENT_TEMPLATE=$(ss-get hn-fedid-client-template)
 HN_TENANT_NAME=$(ss-get hn-tenant-name)
 
 ZONE_NAME=$HN_TENANT_NAME
@@ -32,7 +31,6 @@ JSON_PATH=$(pwd)/client.json
 OZ_HOST=$(ss-get hostname)
 sed -i -e 's|OZ_HOST|'$OZ_HOST'|' \
     -i -e 's|HN_FEDID_CLIENT_ID|'$HN_FEDID_CLIENT_ID'|' \
-    -i -e 's|HN_FEDID_CLIENT_TEMPLATE|'"$HN_FEDID_CLIENT_TEMPLATE"'|' \
     $JSON_PATH
 RESP=$(curl -sSf -X POST \
            -d @$JSON_PATH \
