@@ -5,7 +5,7 @@ set -e
 
 export ONECOMP_TYPE=provider
 
-scenarios="s3|gluster|s3-gluster"
+scenarios="raw|s3|gluster|s3-gluster"
 if ( ! echo $1 | grep -Eq "^($scenarios)$" ); then
     echo "First argument should be one of: $scenarios"
     exit 1
@@ -23,6 +23,9 @@ cp docker-compose-oneprovider_$PROVIDER_TYPE.yml \
 set_ss_params
 
 case $PROVIDER_TYPE in
+    "raw")
+        true
+        ;;
     "s3")
         configure_s3
         ;;
