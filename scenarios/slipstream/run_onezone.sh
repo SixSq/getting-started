@@ -48,5 +48,5 @@ main --zone --name $ZONE_NAME $@
 set -e
 
 wait_started
-sleep 240
+sleep 180
 
