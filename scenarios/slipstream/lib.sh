@@ -60,8 +60,17 @@ clean_scenario() {
 }
 
 wait_started() {
-    msg="Congratulations! one$ONECOMP_TYPE has been successfully started"
-    while $(! docker logs one$ONECOMP_TYPE-1 | grep -q "$msg"); do
+    wait_sec=300
+    time_end=$(( $(date -u +%s) + $wait_sec ))
+    comp=one$ONECOMP_TYPE
+    msg="Congratulations! $comp has been successfully started"
+    echo "Waiting for $comp to start for $wait_sec sec."
+    while $(! docker logs $comp-1 | grep -q "$msg"); do
+        if [[ $(date -u +%s) > $time_end ]]; then
+            echo "Timeout wating for $comp after $wait_sec sec."
+            exit 1 
+        fi
+        echo "... sleep 3 sec."
         sleep 3
     done
 }
