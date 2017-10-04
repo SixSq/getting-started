@@ -1,9 +1,9 @@
 version: '2.0'
 
 services:
-  node1.onezone.localhost:
-    image: onedata/onezone:17.06.0-rc1
-    hostname: node1.onezone.localhost
+  node1.onezone:
+    image: onedata/onezone:17.06.0-rc2
+    hostname: node1.onezone.
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: onezone-1
     volumes:
@@ -27,7 +27,7 @@ services:
       ONEPANEL_BATCH_MODE: "true"
       ONEZONE_CONFIG: |
         cluster:
-          domainName: "onezone.localhost"
+          domainName: "onezone."
           autoDeploy: true
           nodes:
             n1:
@@ -44,7 +44,7 @@ services:
               - "n1"
         onezone:
           name: "${ZONE_NAME}"
-          domainName: "onezone.localhost"
+          domainName: "onezone"
         onepanel:
           users:
             "admin":
