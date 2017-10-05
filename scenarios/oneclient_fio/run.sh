@@ -28,6 +28,6 @@ EOF
 # add custom line to start cron benchmarks
 cron
 
-echo $@
+#echo $@
 
 oneclient -f "$@"

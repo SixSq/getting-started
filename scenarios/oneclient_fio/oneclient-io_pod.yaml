@@ -16,7 +16,7 @@ spec:
       containers:
       - name: oneclient-ioping
         image: registry.nuv.la/oneclient-ioping
-        args: ["-t $OD_ACCESS_TOKEN$ -H $OP_HOST$ -o nonempty /mnt"]
+        command: ["/bin/sh", "-c", "/root/run.sh -t $OD_ACCESS_TOKEN$ -H $OP_HOST$ -o nonempty /mnt"]
         securityContext:
           privileged: true
         env:
