@@ -14,7 +14,7 @@ max_units=`grep "min/avg/max/mdev" ioping_output | awk -F'[/= ]' '{print $16}'`
 mdev=`grep "min/avg/max/mdev" ioping_output | awk -F'[/= ]' '{print $19}'`
 mdev_units=`grep "min/avg/max/mdev" ioping_output | awk -F'[/= ]' '{print $20}'`
 
-cat >>session.json <<EOF
+cat >session.json <<EOF
 {
   "sessionTemplate" : {
                         "href" : "session-template/api-key",
@@ -27,7 +27,7 @@ EOF
 curl -H 'content-type: application/json' https://nuv.la/api/session -X POST \
     -d @session.json --cookie-jar ~/cookies -b ~/cookies -sS
 
-cat >>benchmark.json <<EOF
+cat >benchmark.json <<EOF
 {
   "serviceOffer": {
       "href": "$SERVICE_OFFER",
