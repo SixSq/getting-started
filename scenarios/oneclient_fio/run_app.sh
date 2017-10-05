@@ -3,7 +3,7 @@
 . /root/env
 
 # run ioping with direct IO (no caching)
-ioping -c $IOPING_COUNT -w $IOPING_DEADLINE -s $IOPING_SIZE -D $IOPING_PATH > /tmp/ioping_output
+ioping -c $IOPING_COUNT -w $IOPING_DEADLINE -s $IOPING_SIZE -D $IOPING_PATH > ioping_output
 
 min=`grep "min/avg/max/mdev" ioping_output | awk -F'[/= ]' '{print $7}'`
 min_units=`grep "min/avg/max/mdev" ioping_output | awk -F'[/= ]' '{print $8}'`
@@ -36,14 +36,14 @@ cat >>benchmark.json <<EOF
   "credentials": [{"href": "$NUVLA_KEY"}],
   "ioping:path": "$IOPING_PATH",
   "ioping:size": "$IOPING_SIZE",
-  "ioping:count": "$IOPING_COUNT",
-  "ioping:avg_score": "$avg",
+  "ioping:requests": $IOPING_COUNT,
+  "ioping:avg": $avg,
   "ioping:avg_units": "$avg_units",
-  "ioping:max_score": "$max",
+  "ioping:max": $max,
   "ioping:max_units": "$max_units",
-  "ioping:min_score": "$min",
+  "ioping:min": $min,
   "ioping:min_units": "$min_units",
-  "ioping:mdev_score": "$mdev",
+  "ioping:mdev": $mdev,
   "ioping:mdev_units": "$mdev_units",
   "ioping:freetext": "ioping -c $IOPING_COUNT -w $IOPING_DEADLINE -s $IOPING_SIZE -D $IOPING_PATH",
   "acl" : {

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: oneclient-ioping-benchmark-rc
+spec:
+  replicas: 1
+  selector:
+    app: oneclient-ioping-benchmark
+  template:
+    metadata:
+      name: oneclient-ioping-benchmark-pod
+      labels:
+        app: oneclient-ioping-benchmark
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: oneclient-ioping
+        image: registry.nuv.la/oneclient-ioping
+        args: ["-t $OD_ACCESS_TOKEN$ -H $OP_HOST$ -o nonempty /mnt"]
+        securityContext:
+          privileged: true
+        env:
+          - name: IOPING_PATH
+            value: "$PATH$"
+          - name: CLOUD
+            value: "$CLOUD$"
+          - name: NUVLA_KEY
+            value: "$KEY$"
+          - name: NUVLA_SECRET
+            value: "$SECRET$"
