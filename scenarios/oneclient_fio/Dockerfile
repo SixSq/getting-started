@@ -11,3 +11,6 @@ RUN crontab /etc/cron.d/cron_app
 RUN chmod 0644 /etc/cron.d/cron_app
 
 RUN cron
+
+ENTRYPOINT ["cron && /root/run.sh"]
+CMD ["/mnt/oneclient"]
