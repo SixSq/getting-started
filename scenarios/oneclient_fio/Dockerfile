@@ -10,7 +10,6 @@ ADD cron_app /etc/cron.d/cron_app
 RUN crontab /etc/cron.d/cron_app
 RUN chmod 0644 /etc/cron.d/cron_app
 
-RUN cron
+RUN systemctl enable cron
 
-ENTRYPOINT ["cron && /root/run.sh"]
-CMD ["/mnt/oneclient"]
+ADD run.sh /root/run.sh
