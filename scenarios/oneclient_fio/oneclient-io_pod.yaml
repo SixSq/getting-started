@@ -12,7 +12,6 @@ spec:
       labels:
         app: oneclient-ioping-benchmark
     spec:
-      restartPolicy: Never
       containers:
       - name: oneclient-ioping
         image: registry.nuv.la/oneclient-ioping
