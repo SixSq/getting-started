@@ -57,6 +57,10 @@ services:
           redirectionPoint: "https://${PROVIDER_FQDN}" # OR IP ADDRESS
           geoLatitude: ${GEO_LATITUDE}
           geoLongitude: ${GEO_LONGITUDE}
+          adminEmail: "admin@example.com"
+           # Automatically register this Oneprovider in Onezone without subdomain delegation
+          subdomainDelegation: false
+          domain: "${PROVIDER_FQDN}"
         onezone:
           domainName: "${ZONE_FQDN}" # OR IP ADDRESS
         onepanel:
