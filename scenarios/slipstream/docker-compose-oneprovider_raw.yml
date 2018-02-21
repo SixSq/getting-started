@@ -75,7 +75,7 @@ services:
 
 
         oneprovider:
-	  geoLatitude: ${GEO_LATITUDE}
+          geoLatitude: ${GEO_LATITUDE}
           geoLongitude: ${GEO_LONGITUDE}
           register: true
           name: "${PROVIDER_TYPE}_${PROVIDER_FQDN}"         
