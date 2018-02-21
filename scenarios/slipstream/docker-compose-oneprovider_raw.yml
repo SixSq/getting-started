@@ -1,43 +1,55 @@
 version: '2.0'
-
 services:
-  node1.oneprovider:
-    image: onedata/oneprovider:17.06.0-rc7
-    hostname: node1.oneprovider
-    # dns: 8.8.8.8 # uncomment if container can't ping any domain
+  node1.oneprovider.localhost:
+    # Oneprovider Docker image version
+    image: onedata/oneprovider:18.02.0
+    # Hostname (in this case the hostname inside Docker network)
+    hostname: node1.oneprovider.localhost
+    # dns: 8.8.8.8 # Optional, in case Docker containers have no DNS access
+    # Host network mode is preferred, but on some systems may not work (e.g. CentOS)
+    # To use bridge network
+    network_mode: host
+    # Friendly name of the Oneprovider Docker container
     container_name: oneprovider-1
+    # Mapping of volumes to Oneprovider container
     volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"
-        # configuration persistence
+       # Oneprovider runtime files
         - "${ONEPROVIDER_CONFIG_DIR}:/volumes/persistence"
-        # data persistence
+       # Data storage directories
         - "${ONEPROVIDER_DATA_DIR}:/volumes/storage"
-        # Oneprovider
-        #- "${OP_PRIV_KEY_PATH}:/volumes/persistence/etc/op_panel/certs/key.pem"
-        #- "${OP_CERT_PATH}:/volumes/persistence/etc/op_panel/certs/cert.pem"
-        #- "${OP_CACERT_PATH}:/volumes/persistence/etc/op_panel/cacerts/cacert.pem"
-        #- "${OP_CACERT_PATH}:/volumes/persistence/etc/op_worker/cacerts/cacert.pem"
+       # Oneprovider certificate key
+       #- "${OP_PRIV_KEY_PATH}:/volumes/persistence/etc/op_panel/certs/web_key.pem"
+       # Oneprovider public certificate
+       #- "${OP_CERT_PATH}:/volumes/persistence/etc/op_panel/certs/web_cert.pem"
+       # Certificate of public certificate signing authority
+        - "${OP_CACERT_PATH}:/volumes/persistence/etc/op_panel/certs/web_chain.pem"
+       # Additional, trusted CA certificates (all files from this directory will be added)
+        #- "${OP_CACERT_PATH}:/volumes/persistence/etc/op_worker/cacerts"
+    # Expose the necessary ports from Oneprovider container to the host
+    # This section can be commented when using host mode networking
     ports:
       - "53:53"
       - "53:53/udp"
       - "443:443"
       - "80:80"
-      - "5555:5555"
-      - "5556:5556"
       - "6665:6665"
-      - "6666:6666"
-      - "7443:7443"
-      - "8443:8443"
       - "8876:8876"
       - "8877:8877"
       - "9443:9443"
     environment:
-      #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
-      ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
+      # Force Onepanel to read configuration from environment variable
       ONEPANEL_BATCH_MODE: "true"
+      # Provide initial Oneprovider configuration for Onepanel in environment variable
       ONEPROVIDER_CONFIG: |
+        # Cluster configuration allows to specify distribution of Oneprovider
+        # components over multiple nodes - here we deploy entire service on
+        # a single node
         cluster:
-          domainName: "oneprovider"
+          # Domain name of the provider within Docker network, will be appended
+          # to all nodes specified below
+          domainName: "oneprovider.localhost"
+          autoDeploy: true
           nodes:
             n1:
               hostname: "node1"
@@ -49,21 +61,40 @@ services:
             nodes:
               - "n1"
           databases:
+            # Per node Couchbase cache size in MB for all buckets
+            serverQuota: 4096
+            # Per bucket Couchbase cache size in MB across the cluster
+            bucketQuota: 1024
             nodes:
               - "n1"
+
+
+
+
+
+
+
         oneprovider:
-          register: true
-          name: "${PROVIDER_TYPE}_${PROVIDER_FQDN}"
-          geoLatitude: ${GEO_LATITUDE}
+	  geoLatitude: ${GEO_LATITUDE}
           geoLongitude: ${GEO_LONGITUDE}
+          register: true
+          name: "${PROVIDER_TYPE}_${PROVIDER_FQDN}"         
           adminEmail: "admin@example.com"
-           # Automatically register this Oneprovider in Onezone without subdomain delegation
+          # Automatically register this Oneprovider in Onezone without subdomain delegation
           subdomainDelegation: false
           domain: "https://${PROVIDER_FQDN}"
+          # Automatically register this Oneprovider in Onezone without subdomain delegation
+          # subdomainDelegation: true
+          # subdomain: oneprovider-demo # Domain will be "oneprovider-demo.onezone-demo.tk"
         onezone:
-          domainName: "${ZONE_FQDN}" # OR IP ADDRESS
+          # Assign custom name to the Onezone instance
+          domainName: "${ZONE_FQDN}"
         onepanel:
+          # Create initially 1 administrator and 1 regular user
           users:
             "${ADMIN_USERNAME}":
               password: "${ADMIN_PASSWORD}"
               userRole: "admin"
+            "user":
+              password: "password"
+              userRole: "regular"
