@@ -54,7 +54,6 @@ services:
         oneprovider:
           register: true
           name: "${PROVIDER_TYPE}_${PROVIDER_FQDN}"
-          redirectionPoint: "https://${PROVIDER_FQDN}" # OR IP ADDRESS
           geoLatitude: ${GEO_LATITUDE}
           geoLongitude: ${GEO_LONGITUDE}
           adminEmail: "admin@example.com"
