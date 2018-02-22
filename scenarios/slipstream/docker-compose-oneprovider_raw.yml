@@ -2,17 +2,10 @@ version: '2.0'
 
 services:
   node1.oneprovider:
-    # Oneprovider Docker image version
     image: onedata/oneprovider:18.02.0-beta1
-    # Hostname (in this case the hostname inside Docker network)
     hostname: node1.oneprovider.
-    # dns: 8.8.8.8 # Optional, in case Docker containers have no DNS access
-    # Host network mode is preferred, but on some systems may not work (e.g. CentOS)
-    # To use bridge network
-    network_mode: host
-    # Friendly name of the Oneprovider Docker container
+    # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: oneprovider-1
-    # Mapping of volumes to Oneprovider container
     volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"
         # configuration persistence
@@ -26,18 +19,13 @@ services:
         # Additional, trusted CA certificates (any filename is accepted)
         #- "${OP_CACERTS_PATH}:/etc/op_panel/cacerts/customCaBundle.pem"
     ports:
-      - "53:53"
-      - "53:53/udp"
-      - "443:443"
       - "80:80"
+      - "443:443"
       - "6665:6665"
-      - "8876:8876"
-      - "8877:8877"
       - "9443:9443"
     environment:
-      # Force Onepanel to read configuration from environment variable
+      #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
       ONEPANEL_BATCH_MODE: "true"
-      # Provide initial Oneprovider configuration for Onepanel in environment variable
       ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
       # Used for test purposes, disable when you have your own web cert mounted via volumes.
       # Cert will be generated only if none is found under cert path.
@@ -56,15 +44,10 @@ services:
       # WARNING: This functionality is devised for test purposes and must not
       #   be used in production.
       ONEPANEL_TRUST_TEST_CA: "true"  # default: false
+
       ONEPROVIDER_CONFIG: |
-        # Cluster configuration allows to specify distribution of Oneprovider
-        # components over multiple nodes - here we deploy entire service on
-        # a single node
         cluster:
-          # Domain name of the provider within Docker network, will be appended
-          # to all nodes specified below
-          domainName: "oneprovider.localhost"
-          autoDeploy: true
+          domainName: "oneprovider."
           nodes:
             n1:
               hostname: "node1"
@@ -76,12 +59,12 @@ services:
             nodes:
               - "n1"
           databases:
-            # Per node Couchbase cache size in MB for all buckets
-            serverQuota: 4096
-            # Per bucket Couchbase cache size in MB across the cluster
-            bucketQuota: 1024
             nodes:
               - "n1"
+          storages:
+            NFS:
+              type: "posix"
+              mountPoint: "/volumes/storage"
         oneprovider:
           geoLatitude: ${GEO_LATITUDE}
           geoLongitude: ${GEO_LONGITUDE}
@@ -98,16 +81,11 @@ services:
           # This onezone setup is not covered by the getting-started scenarios.
           subdomainDelegation: false
           domain: "${PROVIDER_FQDN}" # OR IP ADDRESS
-          adminEmail: "admin@example.org"
+          adminEmail: "getting-started@onedata.org"
         onezone:
-          # Assign custom name to the Onezone instance
-          domainName: "${ZONE_FQDN}"
+          domainName: "${ZONE_FQDN}" # OR IP ADDRESS
         onepanel:
-          # Create initially 1 administrator and 1 regular user
           users:
             "${ADMIN_USERNAME}":
               password: "${ADMIN_PASSWORD}"
-              userRole: "admin"
-            "user":
-              password: "password"
-              userRole: "regular"
+              userRole: "${ADMIN_USERNAME}"
