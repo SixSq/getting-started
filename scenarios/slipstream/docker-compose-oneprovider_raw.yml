@@ -1,4 +1,5 @@
 version: '2.0'
+
 services:
   node1.oneprovider:
     # Oneprovider Docker image version
@@ -13,7 +14,7 @@ services:
     container_name: oneprovider-1
     # Mapping of volumes to Oneprovider container
     volumes:
-  - "/var/run/docker.sock:/var/run/docker.sock"
+        - "/var/run/docker.sock:/var/run/docker.sock"
         # configuration persistence
         - "${ONEPROVIDER_CONFIG_DIR}:/volumes/persistence"
         # data persistence
@@ -24,7 +25,7 @@ services:
         #- "${OP_CHAIN_PATH}:/etc/op_panel/certs/web_chain.pem"
         # Additional, trusted CA certificates (any filename is accepted)
         #- "${OP_CACERTS_PATH}:/etc/op_panel/cacerts/customCaBundle.pem"
-   ports:
+    ports:
       - "53:53"
       - "53:53/udp"
       - "443:443"
@@ -37,7 +38,7 @@ services:
       # Force Onepanel to read configuration from environment variable
       ONEPANEL_BATCH_MODE: "true"
       # Provide initial Oneprovider configuration for Onepanel in environment variable
-       ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
+      ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
       # Used for test purposes, disable when you have your own web cert mounted via volumes.
       # Cert will be generated only if none is found under cert path.
 
@@ -85,7 +86,7 @@ services:
           geoLatitude: ${GEO_LATITUDE}
           geoLongitude: ${GEO_LONGITUDE}
           register: true
-          name: "${PROVIDER_TYPE}_${PROVIDER_FQDN}"         
+          name: "${PROVIDER_TYPE}_${PROVIDER_FQDN}"
           # "false" in subdomainDelegation means that provider admin
           #         manages its DNS on its own and provider is available
           #         under the domain given in "domain" field
@@ -98,7 +99,7 @@ services:
           subdomainDelegation: false
           domain: "${PROVIDER_FQDN}" # OR IP ADDRESS
           adminEmail: "admin@example.org"
-      onezone:
+        onezone:
           # Assign custom name to the Onezone instance
           domainName: "${ZONE_FQDN}"
         onepanel:
