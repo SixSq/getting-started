@@ -2,7 +2,7 @@ version: '2.0'
 
 services:
   node1.onezone:
-    image: onedata/onezone:17.06.0-rc5
+    image: onedata/onezone:18.02.0-beta1
     hostname: node1.onezone.
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: onezone-1
@@ -13,9 +13,9 @@ services:
         # OpenId configuration
         #- "${AUTH_PATH}:/var/lib/oz_worker/auth.config"
         # Server SSL certificates
-        #- "${OZ_PRIV_KEY_PATH}:/etc/oz_panel/certs/web_key.pem"
-        #- "${OZ_CERT_PATH}:/etc/oz_panel/certs/web_cert.pem"
-        #- "${OZ_CHAIN_PATH}:/etc/oz_panel/certs/web_chain.pem"
+        - "/etc/letsencrypt/live/onezone.rhea-hn.com/privkey.pem:/etc/oz_panel/certs/web_key.pem"
+        - "/etc/letsencrypt/live/onezone.rhea-hn.com/cert.pem:/etc/oz_panel/certs/web_cert.pem"
+        - "/etc/letsencrypt/live/onezone.rhea-hn.com/chain.pem:/etc/oz_panel/certs/web_chain.pem"
         # Additional, trusted CA certificates (any filename is accepted)
         #- "${OZ_CACERTS_PATH}:/etc/oz_panel/cacerts/customCaBundle.pem"
     ports:
@@ -23,29 +23,12 @@ services:
       - "53:53/udp"
       - "80:80"
       - "443:443"
+      - "6666:6666"
       - "9443:9443"
     environment:
       #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
       ONEPANEL_BATCH_MODE: "true"
       ONEPANEL_LOG_LEVEL: "none" # prints logs to stdout (possible values: none, debug, info, error), by default set to info
-      # Used for test purposes, disable when you have your own web cert mounted via volumes.
-      # Cert will be generated only if none is found under cert path.
-
-      # If enabled, a new web cert will be generated with CN matching the
-      #   ONEPANEL_GENERATED_CERT_DOMAIN and signed by OnedataTestWebServerCa
-      # NOTE: The generation will be performed upon every startup, any
-      #   existing certs will be backed up and placed in the same directory.
-      # WARNING: This functionality is devised for test purposes and must not
-      #   be used in production.
-      ONEPANEL_GENERATE_TEST_WEB_CERT: "true"  # default: false
-      # The generated test web cert will be issued for below domain.
-      ONEPANEL_GENERATED_CERT_DOMAIN: "node1.onezone"  # default: ""
-      # If enabled, onepanel will trust any server that has a cert signed by
-      #   the OnedataTestWebServerCa.
-      # WARNING: This functionality is devised for test purposes and must not
-      #   be used in production.
-      ONEPANEL_TRUST_TEST_CA: "true"  # default: false
-
       ONEZONE_CONFIG: |
         cluster:
           domainName: "onezone."
@@ -65,12 +48,12 @@ services:
               - "n1"
         onezone:
           name: "${ZONE_NAME}"
-          domainName: "onezone"
+          domainName: "onezone.rhea-hn.com"
         onepanel:
           users:
             "${ADMIN_USERNAME}":
               password: "${ADMIN_PASSWORD}"
               userRole: "admin"
             "user":
-              password: "password"
+              password: "password123"
               userRole: "regular"
