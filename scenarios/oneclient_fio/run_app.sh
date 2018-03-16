@@ -32,7 +32,7 @@ cat >benchmark.json <<EOF
       "href": "$SERVICE_OFFER",
       "connector": {"href": "$CLOUD"}
   },
-  "credentials": [{"href": "$NUVLA_KEY"}],
+  "credentials": [{"href": "credential/$NUVLA_KEY"}],
   "ioping:path": "$IOPING_PATH",
   "ioping:size": "$IOPING_SIZE",
   "ioping:requests": $IOPING_COUNT,

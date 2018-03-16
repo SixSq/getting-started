@@ -1,4 +1,4 @@
-FROM onedata/oneclient:17.06.0-rc4
+FROM onedata/oneclient:18.02.0-beta1
 MAINTAINER Cristovao Cordeiro <cris@sixsq.com>
 
 RUN apt-get install -y ioping
